@@ -34,9 +34,9 @@ module ContentfulModel
         else
           raise ContentfulModel::AttributeNotFoundError, "no attribute #{method} found"
         end
-      else
+      elsif self.class.coercions
         # if there's no coercion specified, return the result
-        if self.class.coercions[method].nil?
+        if  self.class.coercions[method].nil?
           return result
         #if there's a coercion specified for the field and it's a proc, pass the result
         #to the proc
@@ -49,6 +49,8 @@ module ContentfulModel
           #... or just return the result
           return result
         end
+      else
+        return result
       end
     end
 
